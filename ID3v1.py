@@ -1,4 +1,5 @@
 import json
+import Constants
 
 
 class ID3v1:
@@ -12,9 +13,10 @@ class ID3v1:
         self.zero_byte = None  # Если есть номер трека, то установлен в 0
         self.track = None  # Номер трека
         self.genre = None
-
-        with open('genres.json', 'r', encoding='utf-8') as f:
-            self.genres = json.load(f)
+        self.genres = Constants.GENRES
+        #
+        # with open('genres.json', 'r', encoding='utf-8') as f:
+        #     self.genres = json.load(f)
 
     def parse_info(self, info):
         self.set_header(info[0:3])
