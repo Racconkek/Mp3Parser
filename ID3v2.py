@@ -50,7 +50,7 @@ class ID3v2:
             frame.set_size(file.read(4))
             frame.set_flags(file.read(2))
             frame.set_text(file.read(frame.size))
-            print(frame.tag, frame.text)
+            # print(frame.tag, frame.text)
             frames.append(frame)
             counter += 10 + frame.size
         self.frames = frames
@@ -59,7 +59,7 @@ class ID3v2:
         info = 'ID3v2 TAG'+'\nVersion: ' + str(self.version) + '\nSubversion: ' + str(self.subversion) + \
                '\nFlags: ' + str(self.flags) + '\n'
         for e in self.frames:
-            info+= e.tag + ' ' + Constants.TAG_NAMES_TO_DESCRIPTION[e.tag] + ' :' + e.text + '\n'
+            info+= e.tag + ' ' + Constants.TAG_NAMES_TO_DESCRIPTION[e.tag] + ': ' + e.text + '\n'
         return info
 
 
