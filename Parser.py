@@ -1,7 +1,9 @@
+import re
+import wx
 from ID3v1 import *
 from ID3v2 import *
-import re
 from arg_parser import ArgParser
+from Player import Player
 
 class Parser:
     def __init__(self):
@@ -37,8 +39,8 @@ class Parser:
             print('Can\'t open file')
 
 
-def main():
-    parser = Parser()
+def handle_argument_commands(parser):
+    file_name = None
     ar = ArgParser()
     try:
         file_name, commands = ar.parse_arguments()
@@ -51,20 +53,31 @@ def main():
                 parser.parse_file(file_name)
     except Exception as e:
         print(str(e))
-# while not end:
-#     command = input()
-#     if command == 'parse tag1' and file_name is not None:
-#         parser.parse_tag1(file_name)
-#     elif command == 'parse tag2' and file_name is not None:
-#         parser.parse_tag2(file_name)
-#     elif re.match(r'set file .+.mp3', command) is not None:
-#         file_name = command[9:]
-#         print(file_name)
-#     elif command == 'end':
-#         end = True
-#     elif command == 'parse' and file_name is not None:
-#         parser.parse_file(file_name)
-    # parser.parse_file('30 Seconds To Mars - This Is War.mp3')
+
+    return file_name
+
+def main():
+    parser = Parser()
+    file_name = handle_argument_commands(parser)
+    end = False
+    while not end:
+        command = input()
+        if command == 'parse tag1' and file_name is not None:
+            parser.parse_tag1(file_name)
+        elif command == 'parse tag2' and file_name is not None:
+            parser.parse_tag2(file_name)
+        elif re.match(r'set file .+.mp3', command) is not None:
+            file_name = command[9:]
+            print(file_name)
+        elif command == 'end':
+            end = True
+        elif command == 'parse' and file_name is not None:
+            parser.parse_file(file_name)
+        elif command == 'play' and file_name is not None:
+            app = wx.App()
+            p = Player(None, "player", file_name)
+            app.MainLoop()
+
 
 if __name__ == '__main__':
     main()
